@@ -1,1 +1,884 @@
-<h1>moto</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley de Tránsito Motos Chile</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CSS (for lupa, person, document, terminal, keyboard, variable, unit icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8; /* Gris muy claro para el fondo */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Evitar scroll horizontal */
+        }
+
+        /* Navbar Customization */
+        .navbar-custom {
+            background-color: #e0e0e0; /* Gris claro para el fondo de la navbar */
+            transition: all 0.3s ease-in-out;
+            padding: 1rem 3%; /* 3% de margen a los lados */
+            border-bottom-left-radius: 10px; /* Esquinas redondeadas */
+            border-bottom-right-radius: 10px; /* Esquinas redondeadas */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 700;
+            color: #333; /* Color oscuro para que contraste con el gris claro */
+            transition: font-size 0.3s ease-in-out;
+        }
+
+        .navbar-custom .nav-link {
+            color: #333 !important; /* Texto de los enlaces en oscuro para que contraste */
+            font-weight: 600; /* Negrita */
+            position: relative;
+            text-decoration: none; /* Quitar el subrayado predeterminado */
+            transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
+            padding: 0.5rem 1rem;
+            margin-left: 10px; /* Espacio entre elementos del navbar */
+            border-radius: 5px;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #007bff !important; /* Azul al pasar el cursor */
+        }
+
+        .navbar-custom .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #007bff; /* Azul para el subrayado */
+            transition: width 0.3s ease-in-out;
+        }
+
+        .navbar-custom .nav-link:hover::after {
+            width: 80%; /* Subrayado azul al pasar el cursor */
+        }
+
+        /* Navbar shrinking on scroll */
+        .navbar-shrink {
+            padding: 0.5rem 3%; /* Más pequeña al hacer scroll */
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .navbar-shrink .navbar-brand {
+            font-size: 1.2rem; /* Tamaño de fuente más pequeño para el logo */
+        }
+
+        /* Search Button and Bar */
+        .search-toggler {
+            background-color: #fff; /* Botón blanco */
+            border: 2px solid #fff; /* Borde blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+            padding: 0.5rem 0.8rem;
+            transition: all 0.2s ease-in-out;
+            margin-left: 10px;
+        }
+
+        .search-toggler:hover {
+            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+        }
+
+        .search-toggler i {
+            color: #007bff; /* Color azul para la lupa */
+            font-size: 1.2rem;
+        }
+
+        .search-bar-container {
+            position: absolute;
+            top: 100%; /* Debajo de la navbar */
+            left: 0;
+            width: 100%;
+            background-color: #e0e0e0; /* Mismo color que la navbar */
+            padding: 10px 3%;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            display: none; /* Oculto por defecto */
+            z-index: 1000;
+        }
+
+        .search-bar-container.show {
+            display: block;
+        }
+
+        .search-bar-container input {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Contact Button */
+        .contact-btn {
+            background-color: #fff; /* Botón blanco */
+            border: 2px solid #fff; /* Borde blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+            padding: 0.5rem 0.8rem;
+            transition: all 0.2s ease-in-out;
+            margin-left: 10px;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+        }
+
+        .contact-btn i {
+            color: #007bff; /* Color azul para el ícono de persona */
+            font-size: 1.2rem;
+        }
+
+        /* Mobile Menu Toggle (Hamburger) */
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280,0,0,1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 20px 8%; /* Márgenes del 8% a los lados */
+            text-align: justify; /* Texto justificado */
+            line-height: 1.6; /* Espaciado simple entre líneas */
+            color: #333;
+        }
+
+        .main-content h1, .main-content h2, .main-content h3,
+        .main-content h4, .main-content h5, .main-content h6 {
+            font-weight: 700; /* Negrita */
+            font-size: 1.8rem; /* Un poco más grande */
+            margin-top: 1.5em; /* Más espacio entre párrafos para encabezados */
+            margin-bottom: 0.8em;
+            text-align: center;
+            color: #007bff; /* Color azul para los encabezados */
+        }
+
+        .main-content p {
+            margin-bottom: 1.5em; /* Más espacio entre párrafos */
+        }
+
+        .main-content a {
+            font-weight: bold; /* Enlaces en negrita */
+            color: inherit; /* Mismo color que el texto normal */
+            text-decoration: none; /* Quitar subrayado por defecto */
+            position: relative;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .main-content a:hover {
+            color: #007bff; /* Azul al pasar el cursor */
+            text-decoration: underline; /* Subrayado al pasar el cursor */
+        }
+
+        /* Images */
+        .main-content img {
+            max-width: 100%; /* Adaptadas al ancho de la columna */
+            height: auto;
+            display: block;
+            margin: 20px auto; /* Centrar imágenes */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra sutil */
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Lists */
+        .main-content ul {
+            list-style: none; /* Eliminar viñetas predeterminadas */
+            padding-left: 0;
+        }
+
+        .main-content ul li {
+            position: relative;
+            padding-left: 25px; /* Espacio para la viñeta personalizada */
+            margin-bottom: 0.5em;
+        }
+
+        .main-content ul li::before {
+            content: "\2023"; /* Unicode para un triángulo (o puedes usar un SVG para una flecha) */
+            font-size: 1em;
+            color: #007bff; /* Color azul para las viñetas */
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+        }
+
+        /* Blockquotes */
+        .main-content blockquote {
+            background-color: rgba(173, 216, 230, 0.3); /* Azul suave semi-transparente */
+            border-left: 5px solid #007bff; /* Borde azul a la izquierda */
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 8px; /* Bordes redondeados */
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Videos */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 20px auto;
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
+        }
+
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px; /* Bordes redondeados también en el iframe */
+        }
+
+        /* Icons for special elements (document, variable, keyboard, terminal) */
+        .icon-small {
+            font-size: 0.9em;
+            vertical-align: middle;
+            margin-right: 5px;
+            color: #007bff; /* Azul para los íconos pequeños */
+        }
+
+        /* Install App Banner */
+        #install-banner {
+            position: fixed;
+            top: -150px; /* Inicialmente fuera de la vista */
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7); /* Transparente como glaseado (opacidad 0.7) */
+            backdrop-filter: blur(5px); /* Efecto de glaseado */
+            -webkit-backdrop-filter: blur(5px); /* Para compatibilidad Safari */
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10000;
+            transition: top 0.5s ease-out; /* Animación de deslizamiento */
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        #install-banner.show {
+            top: 0;
+        }
+
+        #install-banner-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #install-banner p {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 0 15px;
+            font-weight: 600;
+        }
+
+        #install-button {
+            background-color: #fff; /* Botón blanco */
+            border: 2px solid #fff; /* Borde blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        #install-button:hover {
+            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más marcada al hover */
+        }
+
+        #install-button i {
+            color: #007bff; /* Color azul para el ícono de descarga */
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: #f8f8f8;
+            font-size: 0.9em;
+            margin-top: 50px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        /* Exam Section Styles */
+        #exam-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .question-card {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .question-card h5 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .question-card .form-check-label {
+            cursor: pointer;
+            padding-left: 5px;
+        }
+
+        .exam-controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .exam-controls button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .exam-controls button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #exam-results {
+            background-color: #e6f7ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: none;
+        }
+
+        #exam-results h3 {
+            color: #007bff;
+        }
+
+        #exam-results p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* AI Clarifier Section */
+        #ai-clarifier-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        #ai-clarifier-section textarea {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        #ai-clarifier-section button {
+            background-color: #28a745; /* Verde para el botón de IA */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #ai-clarifier-section button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        #ai-clarifier-response {
+            background-color: #f0fdf4; /* Fondo verde muy claro para la respuesta */
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #d4edda;
+            white-space: pre-wrap; /* Para mantener el formato de la respuesta del LLM */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar-custom {
+                padding: 1rem 5%;
+            }
+            .navbar-custom .navbar-brand {
+                font-size: 1.5rem;
+            }
+            .navbar-custom .navbar-collapse {
+                background-color: #e0e0e0; /* Fondo para el menú colapsado */
+                padding: 10px;
+                border-radius: 8px;
+                margin-top: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .navbar-custom .nav-link {
+                text-align: center;
+                margin: 5px 0;
+            }
+            .navbar-custom .nav-link::after {
+                width: 50%; /* Subrayado más corto en móvil */
+            }
+            .main-content {
+                padding: 15px 5%; /* Más margen en móviles */
+            }
+            .main-content h1, .main-content h2, .main-content h3,
+            .main-content h4, .main-content h5, .main-content h6 {
+                font-size: 1.5rem; /* Encabezados más pequeños en móvil */
+            }
+            #install-banner p {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+            #install-button {
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Install App Banner -->
+    <div id="install-banner">
+        <div id="install-banner-content">
+            <p>Si te gusta la aplicación, ¡Ahora puedes instalarla!</p>
+            <a href="#" id="install-button">
+                <i class="bi bi-download"></i>
+                Instalar
+            </a>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top" id="mainNavbar">
+        <div class="container-fluid px-3">
+            <a class="navbar-brand" href="#">Ley Tránsito Motos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#exam-section">Examen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ai-clarifier-section">Clarificador IA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#leyes">Leyes y normativas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#interes">Links de interés</a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <button class="search-toggler" id="searchToggle">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="contact-btn" href="#contacto">
+                            <i class="bi bi-person"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Search Bar that expands -->
+        <div class="search-bar-container" id="searchBar">
+            <input type="text" placeholder="Buscar en la página..." aria-label="Search">
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content mt-5 pt-5">
+        <h1 class="text-center">¡Bienvenido a la Plataforma de Ley de Tránsito para Motociclistas en Chile!</h1>
+        <p>Esta plataforma ha sido diseñada para ofrecerte información relevante y actualizada sobre la Ley de Tránsito chilena, con un enfoque especial en la normativa aplicable a motocicletas. Nuestro objetivo es ayudarte a comprender mejor tus derechos y deberes como conductor, promoviendo una conducción segura y responsable en las vías públicas.</p>
+
+        <!-- Exam Section -->
+        <section id="exam-section" class="mt-5">
+            <h2 class="text-center">Examen de Ley de Tránsito para Motociclistas</h2>
+            <p class="text-center">Pon a prueba tus conocimientos sobre la Ley de Tránsito chilena, con preguntas enfocadas en la normativa de motos. ¡Obtén tu calificación en escala del 1 al 7!</p>
+            <div id="quiz-container" class="mt-4">
+                <!-- Questions will be loaded here by JavaScript -->
+                <p class="text-center">Cargando preguntas del examen...</p>
+            </div>
+            <div class="exam-controls">
+                <button id="submit-quiz-btn" style="display: none;">Enviar Examen</button>
+            </div>
+            <div id="exam-results" class="mt-4">
+                <!-- Exam results will be displayed here -->
+            </div>
+        </section>
+
+        <!-- AI Legal Clarifier Section -->
+        <section id="ai-clarifier-section" class="mt-5">
+            <h2 class="text-center">Clarificador Legal con IA (Pregúntale a Gemini)</h2>
+            <p class="text-center">¿Tienes dudas sobre algún artículo de la Ley de Tránsito o una normativa específica para motociclistas? Escribe tu pregunta a continuación y nuestra inteligencia artificial te proporcionará una explicación clara.</p>
+            <textarea id="ai-question-input" placeholder="Ej: ¿Qué dice la Ley 18.290 sobre el uso del chaleco reflectante en motos?"></textarea>
+            <button id="ask-ai-btn">Preguntar a la IA</button>
+            <div id="ai-clarifier-response" class="mt-3">
+                <p>Tu respuesta aparecerá aquí.</p>
+            </div>
+        </section>
+
+        <h2 id="leyes">Leyes y Normativas Clave (Ley 18.290 y más)</h2>
+        <p>La Ley de Tránsito Nº 18.290 es el cuerpo legal fundamental que regula el uso de las vías públicas en Chile. A continuación, exploraremos algunos de sus puntos más importantes, así como otras normativas específicas para motociclistas.</p>
+
+        <h3>Uso de Casco y Elementos de Seguridad</h3>
+        <p>El uso del casco protector es obligatorio para todos los motociclistas y sus acompañantes. Este debe ser un casco reglamentario, certificado y abrochado correctamente. La normativa también exige el uso de otros elementos de seguridad.</p>
+        <img src="https://placehold.co/800x400/007bff/ffffff?text=Casco+Reglamentario" alt="Infografía sobre el uso de casco reglamentario en motocicletas." class="img-fluid">
+        <p class="image-caption">Imagen explicativa sobre la importancia del casco en la seguridad vial de los motociclistas.</p>
+
+        <p>Algunos puntos importantes a recordar sobre la seguridad vial en moto:</p>
+        <ul>
+            <li><i class="icon-small bi bi-triangle-fill"></i> El casco debe estar homologado y en buenas condiciones.</li>
+            <li><i class="icon-small bi bi-triangle-fill"></i> Usar guantes, chaqueta con protecciones y calzado adecuado.</li>
+            <li><i class="icon-small bi bi-triangle-fill"></i> Mantener las luces encendidas día y noche.</li>
+        </ul>
+
+        <h3>Velocidad y Distancia de Seguridad</h3>
+        <p>Respetar los límites de velocidad y mantener una distancia de seguridad adecuada es crucial para evitar accidentes. La <abbr title="Ley de Tránsito" class="text-primary">LT</abbr> establece sanciones para quienes no cumplan con estas disposiciones. Por ejemplo, la velocidad máxima en zonas urbanas es de 50 <i class="icon-small bi bi-speedometer"></i> km/h.</p>
+
+        <blockquote>
+            <p>Como indica el artículo 144 de la Ley de Tránsito: "La velocidad en zonas urbanas no podrá exceder de 50 kilómetros por hora."</p>
+            <p class="text-end fst-italic"><i class="icon-small bi bi-quote"></i> Ejemplo de cita en bloque <i class="icon-small bi bi-quote-right"></i></p>
+        </blockquote>
+
+        <p>El cálculo de la distancia de seguridad puede variar dependiendo de las condiciones climáticas y del estado de la vía. Una <var class="text-primary">fórmula</var> básica para estimar la distancia en segundos es la "regla de los tres segundos".</p>
+
+        <h3>Maniobras y Adelantamientos</h3>
+        <p>Las motocicletas deben realizar los adelantamientos y virajes con especial precaución, respetando las señales y las normas de tránsito. <kbd class="text-primary">Ctrl</kbd> + <kbd class="text-primary">Alt</kbd> + <kbd class="text-primary">Del</kbd> no se aplica aquí, pero la atención constante es vital.</p>
+
+        <pre><code>
+            // Ejemplo de código para cálculo de distancia (solo ilustrativo)
+            function calcularDistanciaSeguridad(velocidad_kmh) {
+                let velocidad_ms = velocidad_kmh * 1000 / 3600;
+                let distancia_reaccion = velocidad_ms * 1; // 1 segundo de reacción
+                let distancia_frenado = (velocidad_ms * velocidad_ms) / (2 * 9.8 * 0.7); // Ejemplo básico
+                return distancia_reaccion + distancia_frenado;
+            }
+            // console.log(calcularDistanciaSeguridad(60)); // Salida de programa <i class="icon-small bi bi-terminal"></i>
+        </code></pre>
+        <p>La <mark>seguridad</mark> es primordial en cada trayecto. Evite maniobras bruscas.</p>
+
+        <h2 id="interes">Links de Interés</h2>
+        <p>Aquí encontrarás enlaces a recursos útiles para complementar tu conocimiento sobre la ley de tránsito y la conducción de motocicletas.</p>
+        <ul>
+            <li><i class="icon-small bi bi-link"></i> <a href="https://www.conaset.cl/" target="_blank">CONASET (Comisión Nacional de Seguridad de Tránsito)</a></li>
+            <li><i class="icon-small bi bi-link"></i> <a href="https://www.bcn.cl/leychile/navegar?i=29708" target="_blank">Ley de Tránsito 18.290 - Biblioteca del Congreso Nacional</a></li>
+            <li><i class="icon-small bi bi-link"></i> <a href="https://practicatest.cl/blog/normativa-de-transito/como-adelantar-con-motocicleta" target="_blank">Artículo: Cómo adelantar con motocicleta - Practicatest Chile</a></li>
+        </ul>
+
+        <!-- Placeholder for a simple map, no zoom -->
+        <div style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; margin: 20px auto; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
+            <p style="color: #666;">Mapa de referencia (sin interactividad)</p>
+            <!-- Puedes incrustar un mapa estático de Google Maps o una imagen de mapa aquí si es necesario -->
+        </div>
+
+        <h3>Documentos y Recursos Descargables</h3>
+        <p>Próximamente, podrás descargar documentos importantes relacionados con la ley de tránsito.</p>
+        <p><i class="icon-small bi bi-file-earmark-text"></i> <a href="#" download>Manual de Conducción para Motociclistas (PDF)</a></p>
+
+        <h3>Videos Educativos</h3>
+        <p>Más adelante, encontrarás una sección con videos tutoriales sobre técnicas de conducción segura y explicaciones de la ley.</p>
+        <div class="video-container">
+            <!-- Placeholder para un reproductor de video -->
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <h2 id="contacto">Contacto</h2>
+        <p>Si tienes preguntas o necesitas más información, no dudes en contactarnos. Estamos aquí para ayudarte a ser un conductor más seguro y mejor informado.</p>
+        <address class="text-center">
+            <strong>Daniel Elías Figueroa Chacama</strong><br>
+            Ingeniero en Informática<br>
+            Chile
+        </address>
+    </div>
+
+    <footer class="footer">
+        <p>Plataforma creada por Daniel Elías Figueroa Chacama, Ingeniero en Informática.</p>
+        <p>&copy; 2025 Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar Shrink on Scroll
+            const navbar = document.getElementById('mainNavbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('navbar-shrink');
+                } else {
+                    navbar.classList.remove('navbar-shrink');
+                }
+            });
+
+            // Search Bar Toggle
+            const searchToggle = document.getElementById('searchToggle');
+            const searchBar = document.getElementById('searchBar');
+
+            searchToggle.addEventListener('click', function() {
+                searchBar.classList.toggle('show');
+            });
+
+            // Hide search bar if clicked outside
+            document.addEventListener('click', function(event) {
+                if (!searchBar.contains(event.target) && !searchToggle.contains(event.target)) {
+                    searchBar.classList.remove('show');
+                }
+            });
+
+            // Install Banner Animation
+            const installBanner = document.getElementById('install-banner');
+            setTimeout(() => {
+                installBanner.classList.add('show');
+                setTimeout(() => {
+                    installBanner.classList.remove('show');
+                }, 7000); // Banner visible por 7 segundos
+            }, 1000); // Aparece 1 segundo después de cargar la página
+
+            // Exam Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const submitQuizBtn = document.getElementById('submit-quiz-btn');
+            const examResults = document.getElementById('exam-results');
+
+            let questions = []; // This will hold the questions generated by Gemini
+
+            // Function to generate questions using Gemini API
+            async function generateQuestions() {
+                quizContainer.innerHTML = '<p class="text-center">Generando preguntas con IA... Esto puede tardar unos segundos.</p>';
+                const prompt = "Genera 30 preguntas de opción múltiple sobre la Ley de Tránsito de Chile (Ley 18.290), enfocadas en normativas para motocicletas. Cada pregunta debe tener 4 opciones (A, B, C, D) y una única respuesta correcta. El formato debe ser un arreglo de objetos JSON, donde cada objeto tenga 'question', 'options' (un arreglo de strings) y 'correctAnswer' (el string de la respuesta correcta).";
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    "question": { "type": "STRING" },
+                                    "options": {
+                                        "type": "ARRAY",
+                                        "items": { "type": "STRING" }
+                                    },
+                                    "correctAnswer": { "type": "STRING" }
+                                },
+                                "propertyOrdering": ["question", "options", "correctAnswer"]
+                            }
+                        }
+                    }
+                };
+
+                try {
+                    const apiKey = "";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Error al generar preguntas:', errorData);
+                        quizContainer.innerHTML = '<p class="text-danger text-center">Error al cargar las preguntas. Inténtalo de nuevo más tarde.</p>';
+                        return;
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const jsonText = result.candidates[0].content.parts[0].text;
+                        questions = JSON.parse(jsonText);
+                        displayQuiz();
+                    } else {
+                        quizContainer.innerHTML = '<p class="text-danger text-center">No se pudieron generar preguntas válidas.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error de red o parseo:', error);
+                    quizContainer.innerHTML = '<p class="text-danger text-center">Error de conexión al generar las preguntas. Revisa tu red.</p>';
+                }
+            }
+
+            // Function to display the quiz questions
+            function displayQuiz() {
+                quizContainer.innerHTML = ''; // Clear loading message
+                questions.forEach((q, index) => {
+                    const questionCard = document.createElement('div');
+                    questionCard.classList.add('question-card');
+                    questionCard.innerHTML = `
+                        <h5>${index + 1}. ${q.question}</h5>
+                        <div class="options-container">
+                            ${q.options.map((option, optIndex) => `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="question${index}" id="q${index}opt${optIndex}" value="${option}">
+                                    <label class="form-check-label" for="q${index}opt${optIndex}">
+                                        ${String.fromCharCode(65 + optIndex)}. ${option}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    quizContainer.appendChild(questionCard);
+                });
+                submitQuizBtn.style.display = 'block'; // Show submit button
+            }
+
+            // Function to submit the quiz and calculate score
+            function submitQuiz() {
+                let score = 0;
+                questions.forEach((q, index) => {
+                    const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                    if (selectedOption && selectedOption.value === q.correctAnswer) {
+                        score++;
+                    }
+                });
+
+                const maxScore = questions.length;
+                const percentage = (score / maxScore) * 100;
+                const grade = calculateGrade(percentage);
+
+                examResults.innerHTML = `
+                    <h3>Resultados del Examen</h3>
+                    <p>Respuestas correctas: ${score} de ${maxScore}</p>
+                    <p>Porcentaje: ${percentage.toFixed(2)}%</p>
+                    <p>Tu nota en escala del 1 al 7: <strong>${grade.toFixed(1)}</strong></p>
+                    ${grade >= 4.0 ? '<p class="text-success">¡Felicitaciones! Has aprobado.</p>' : '<p class="text-danger">Necesitas repasar más. ¡No te desanimes!</p>'}
+                `;
+                examResults.style.display = 'block';
+                submitQuizBtn.style.display = 'none'; // Hide submit button after submission
+                quizContainer.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true); // Disable options after submission
+            }
+
+            // Function to calculate grade from 1 to 7
+            function calculateGrade(percentage) {
+                if (percentage < 50) return (1.0 + (percentage / 50) * 2.0); // 1.0 to 3.0
+                if (percentage < 60) return (3.0 + (percentage - 50) / 10 * 1.0); // 3.0 to 4.0
+                if (percentage < 70) return (4.0 + (percentage - 60) / 10 * 1.0); // 4.0 to 5.0
+                if (percentage < 85) return (5.0 + (percentage - 70) / 15 * 1.0); // 5.0 to 6.0
+                return (6.0 + (percentage - 85) / 15 * 1.0); // 6.0 to 7.0
+            }
+
+
+            submitQuizBtn.addEventListener('click', submitQuiz);
+
+            // Call generateQuestions when the page loads to populate the quiz
+            generateQuestions();
+
+            // AI Clarifier Logic
+            const aiQuestionInput = document.getElementById('ai-question-input');
+            const askAiBtn = document.getElementById('ask-ai-btn');
+            const aiClarifierResponse = document.getElementById('ai-clarifier-response');
+
+            askAiBtn.addEventListener('click', async function() {
+                const userQuestion = aiQuestionInput.value.trim();
+                if (userQuestion === "") {
+                    aiClarifierResponse.innerHTML = '<p class="text-danger">Por favor, escribe tu pregunta.</p>';
+                    return;
+                }
+
+                aiClarifierResponse.innerHTML = '<p>Preguntando a la IA... Esto puede tardar unos segundos.</p>';
+                askAiBtn.disabled = true;
+
+                const prompt = `Como un experto en la Ley de Tránsito de Chile (Ley 18.290) y normativas de motocicletas, explica lo siguiente de manera clara y concisa. Si la pregunta es directamente sobre motos, enfócate en esa normativa: "${userQuestion}"`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+
+                try {
+                    const apiKey = ""; // Canvas will automatically provide it in runtime
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Error al llamar a la API de Gemini:', errorData);
+                        aiClarifierResponse.innerHTML = '<p class="text-danger">Hubo un error al obtener la respuesta de la IA. Por favor, inténtalo de nuevo.</p>';
+                        return;
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        aiClarifierResponse.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        aiClarifierResponse.innerHTML = '<p>No se pudo obtener una respuesta clara de la IA.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error de red o parseo en la llamada a Gemini:', error);
+                    aiClarifierResponse.innerHTML = '<p class="text-danger">Error de conexión. Asegúrate de tener acceso a internet.</p>';
+                } finally {
+                    askAiBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
