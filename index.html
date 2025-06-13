@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ley de Tránsito Motos Chile</title>
+    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CSS (for lupa, person, document, terminal, keyboard, variable, unit icons) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         /* Base Styles */
@@ -281,10 +284,14 @@
             transition: top 0.5s ease-out; /* Animación de deslizamiento */
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
+            display: none; /* Hidden by default, shown by JS when PWA is installable */
         }
 
         #install-banner.show {
             top: 0;
+            display: flex; /* Ensure it's flex when shown */
+            justify-content: center;
+            align-items: center;
         }
 
         #install-banner-content {
@@ -355,11 +362,12 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .question-card h5 { /* Estilo para las preguntas del examen (h5 por defecto) */
+        .question-card h5 { /* Estilo para las preguntas del examen */
             color: #333; /* Color negro */
-            font-weight: 400; /* No negrita */
+            font-weight: 700; /* Negrita */
+            font-size: 1em; /* Más pequeña */
+            text-align: justify; /* Justificado */
             margin-bottom: 15px;
-            font-size: 1.17em; /* Equivalente a h3 por defecto */
         }
 
         .question-card .form-check-label {
@@ -559,6 +567,7 @@
 </head>
 <body>
 
+    <!-- Install App Banner -->
     <div id="install-banner">
         <div id="install-banner-content">
             <p>Si te gusta la aplicación, ¡Ahora puedes instalarla!</p>
@@ -569,6 +578,7 @@
         </div>
     </div>
 
+    <!-- Installation Modal -->
     <div id="install-modal" class="install-modal-overlay">
         <div class="install-modal-content">
             <h4>¡Instala esta Web App!</h4>
@@ -579,6 +589,7 @@
         </div>
     </div>
 
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top" id="mainNavbar">
         <div class="container-fluid px-3">
             <a class="navbar-brand" href="#">Ley Tránsito Motos</a>
@@ -612,28 +623,34 @@
                 </ul>
             </div>
         </div>
+        <!-- Search Bar that expands -->
         <div class="search-bar-container" id="searchBar">
             <input type="text" placeholder="Buscar en la página..." aria-label="Search">
         </div>
     </nav>
 
+    <!-- Main Content Area -->
     <div class="main-content mt-5 pt-5">
         <h1 class="text-center">¡Bienvenido a la Plataforma de Ley de Tránsito para Motociclistas en Chile!</h1>
         <p>Esta plataforma ha sido diseñada para ofrecerte información relevante y actualizada sobre la Ley de Tránsito chilena, con un enfoque especial en la normativa aplicable a motocicletas. Nuestro objetivo es ayudarte a comprender mejor tus derechos y deberes como conductor, promoviendo una conducción segura y responsable en las vías públicas.</p>
 
+        <!-- Exam Section -->
         <section id="exam-section" class="mt-5">
             <h2 class="text-center">Examen de Ley de Tránsito para Motociclistas</h2>
             <p class="text-center">Pon a prueba tus conocimientos sobre la Ley de Tránsito chilena, con preguntas enfocadas en la normativa de motos. ¡Obtén tu calificación en escala del 1 al 7!</p>
             <div id="quiz-container" class="mt-4">
+                <!-- Questions will be loaded here by JavaScript -->
                 <p class="text-center">Cargando preguntas del examen...</p>
             </div>
             <div class="exam-controls">
                 <button id="submit-quiz-btn" style="display: none;">Enviar Examen</button>
             </div>
             <div id="exam-results" class="mt-4">
-                </div>
+                <!-- Exam results will be displayed here -->
+            </div>
         </section>
 
+        <!-- AI Legal Clarifier Section -->
         <section id="ai-clarifier-section" class="mt-5">
             <h2 class="text-center">Clarificador Legal con IA (Pregúntale a Gemini)</h2>
             <p class="text-center">¿Tienes dudas sobre algún artículo de la Ley de Tránsito o una normativa específica para motociclistas? Escribe tu pregunta a continuación y nuestra inteligencia artificial te proporcionará una explicación clara.</p>
@@ -694,7 +711,7 @@
 
         <div style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; margin: 20px auto; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
             <p style="color: #666;">Mapa de referencia (sin interactividad)</p>
-            </div>
+        </div>
 
         <h3>Documentos y Recursos Descargables</h3>
         <p>Próximamente, podrás descargar documentos importantes relacionados con la ley de tránsito.</p>
@@ -759,13 +776,16 @@
             // Show banner initially after 1 second, then hide after 7 seconds
             // Only show if PWA is NOT installed and 'beforeinstallprompt' fires
             setTimeout(() => {
-                // If PWA is not installable, or already installed, hide banner by default
-                // The 'beforeinstallprompt' listener will show it if applicable
-                if (!deferredInstallPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
-                     installBanner.classList.add('show');
+                // Check if PWA is already installed (standalone mode)
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    installBanner.style.display = 'none'; // Hide banner if already installed
+                    console.log('PWA ya está instalada. Ocultando banner.');
+                } else if (!deferredInstallPrompt) { // If not installable via prompt, show simple banner
+                    installBanner.classList.add('show');
                     setTimeout(() => {
                         installBanner.classList.remove('show');
                     }, 7000); 
+                    console.log('PWA no instalable vía prompt, mostrando banner temporal.');
                 }
             }, 1000); 
 
@@ -777,6 +797,7 @@
                 deferredInstallPrompt = e;
                 // Show the install button/banner as the PWA is installable
                 installBanner.style.display = 'flex'; 
+                installBanner.classList.add('show'); // Ensure it becomes visible
                 console.log('beforeinstallprompt event fired. PWA is installable.');
             });
 
@@ -804,11 +825,12 @@
                         installBanner.style.display = 'none'; // Hide banner if accepted
                     } else {
                         // If user dismissed, show the explanatory modal
+                        console.log('PWA prompt dismissed. Showing manual installation modal.');
                         installModal.classList.add('show');
                     }
                 } else {
                     // If beforeinstallprompt hasn't fired or was dismissed, show explanatory modal
-                    console.log('Native PWA install prompt not available or already dismissed. Showing modal.');
+                    console.log('Native PWA install prompt not available or already dismissed. Showing manual installation modal.');
                     installModal.classList.add('show');
                 }
             });
@@ -1084,7 +1106,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question${index}" id="q${index}opt${optIndex}" value="${option}">
                                     <label class="form-check-label" for="q${index}opt${optIndex}">
-                                        ${String.fromCharCode(65 + optIndex)}. ${option}
+                                        ${option}
                                     </label>
                                 </div>
                             `).join('')}
