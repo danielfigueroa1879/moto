@@ -297,69 +297,39 @@
             color: #007bff; /* Azul para los íconos pequeños */
         }
 
-        /* Install App Banner */
-        #install-banner {
+        /* New style for the dynamically created PWA install banner */
+        #dynamic-install-banner {
             position: fixed;
-            top: -150px; /* Inicialmente fuera de la vista */
+            top: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.7); /* Transparente como glaseado (opacidad 0.7) */
-            backdrop-filter: blur(5px); /* Efecto de glaseado */
-            -webkit-backdrop-filter: blur(5px); /* Para compatibilidad Safari */
-            padding: 20px;
+            background-color: rgba(128, 128, 128, 0.6); /* Fondo gris semi-transparente */
+            color: white; /* Letra blanca */
+            font-weight: bold; /* Letra en negrita */
+            padding: 20px; /* Aumenta el padding vertical */
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            z-index: 10000;
-            transition: top 0.5s ease-out; /* Animación de deslizamiento */
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            display: none; /* Hidden by default, shown by JS when PWA is installable */
-        }
-
-        #install-banner.show {
-            top: 0;
-            display: flex; /* Ensure it's flex when shown */
-            justify-content: center;
-            align-items: center;
-        }
-
-        #install-banner-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        #install-banner p {
-            font-size: 1.2rem;
-            color: #333;
-            margin: 0 15px;
-            font-weight: 600;
-        }
-
-        #install-button {
-            background-color: #fff; /* Botón blanco */
-            border: 2px solid #fff; /* Borde blanco */
-            border-radius: 10px; /* Bordes redondeados */
+            z-index: 1000;
+            display: none; /* Hidden by default on PC */
+            justify-content: center; /* Center content horizontally with flex */
+            align-items: center; /* Center content vertically with flex */
             box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
-            padding: 10px 20px;
+        }
+
+        #dynamic-install-banner button {
+            margin-left: 10px;
+            padding: 8px 16px;
+            background: white;
+            color: #0a73c3; /* Color azul para el texto del botón */
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
-        #install-button:hover {
-            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más marcada al hover */
-        }
-
-        #install-button i {
-            color: #007bff; /* Color azul para el ícono de descarga */
-            font-size: 1.5rem;
-            margin-right: 10px;
+        #dynamic-install-banner button:hover {
+            background-color: #f0f0f0; /* Ligeramente más oscuro al pasar el cursor */
+            transform: translateY(-1px);
         }
 
         /* Footer */
@@ -515,71 +485,19 @@
             white-space: pre-wrap; /* Para mantener el formato de la respuesta del LLM */
         }
 
-        /* Modal for Install Button */
+        /* Modal for Install Button (now removed from HTML, only for reference if needed elsewhere) */
         .install-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente oscuro */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10001;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            display: none; /* Always hidden now as it's not used */
         }
 
-        .install-modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .install-modal-content {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px; /* Bordes redondeados */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .install-modal-overlay.show .install-modal-content {
-            transform: translateY(0);
-        }
-
-        .install-modal-content h4 {
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        .install-modal-content p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .install-modal-content button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .install-modal-content button:hover {
-            background-color: #0056b3;
-        }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
+            /* Show dynamic install banner on mobile */
+            #dynamic-install-banner {
+                display: flex; /* Show using flexbox for centering */
+            }
+
             .navbar-custom {
                 padding: 1rem 5%;
             }
@@ -627,6 +545,12 @@
                 font-size: 0.8em; /* Smaller font size for alternatives on mobile */
             }
         }
+
+        @media (min-width: 769px) { /* Hide dynamic install banner on PC */
+            #dynamic-install-banner {
+                display: none !important; /* Hide on larger screens, !important to override JS flex */
+            }
+        }
     </style>
 </head>
 <body>
@@ -634,18 +558,7 @@
     <!-- Background Overlay for blur effect -->
     <div class="background-overlay"></div>
 
-    <!-- Install App Banner -->
-    <div id="install-banner">
-        <div id="install-banner-content">
-            <p>Si te gusta la aplicación, ¡Ahora puedes instalarla!</p>
-            <a href="#" id="install-button">
-                <i class="bi bi-download"></i>
-                Instalar
-            </a>
-        </div>
-    </div>
-
-    <!-- Installation Modal -->
+    <!-- Installation Modal (kept for reference, but display: none in CSS) -->
     <div id="install-modal" class="install-modal-overlay">
         <div class="install-modal-content">
             <h4>¡Instala esta Web App!</h4>
@@ -845,77 +758,77 @@
                 }
             });
 
-            // --- Install App Banner and PWA Logic ---
-            const installBanner = document.getElementById('install-banner');
-            const installButton = document.getElementById('install-button');
-
-            // Show banner initially after 1 second, then hide after 7 seconds
-            // Only show if PWA is NOT installed and 'beforeinstallprompt' fires
-            setTimeout(() => {
-                // Check if PWA is already installed (standalone mode)
-                if (window.matchMedia('(display-mode: standalone)').matches) {
-                    installBanner.style.display = 'none'; // Hide banner if already installed
-                    console.log('PWA ya está instalada. Ocultando banner.');
-                } else { // If not installed, show banner temporarily
-                    installBanner.classList.add('show');
-                    setTimeout(() => {
-                        installBanner.classList.remove('show');
-                    }, 7000); 
-                    console.log('PWA no instalada, mostrando banner temporal.');
-                }
-            }, 1000); 
+            // --- PWA Install Banner Logic (Dynamically created) ---
+            let dynamicInstallBanner = null; // To hold the dynamically created banner element
+            let bannerTimeout; // To hold the timeout for the banner removal
 
             // Listen for the beforeinstallprompt event (PWA installation)
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault(); // Prevent the mini-infobar from appearing on mobile
                 deferredInstallPrompt = e; // Stash the event so it can be triggered later.
-                installBanner.style.display = 'flex'; // Make install banner visible
-                installBanner.classList.add('show'); // Ensure it becomes visible
+                
+                // If the banner doesn't exist yet, create it
+                if (!dynamicInstallBanner && !window.matchMedia('(display-mode: standalone)').matches) {
+                    dynamicInstallBanner = document.createElement('div');
+                    dynamicInstallBanner.id = 'dynamic-install-banner'; // Assign an ID for CSS targeting
+                    dynamicInstallBanner.innerHTML = `
+                        ¿Quieres instalar esta app? 
+                        <button>Instalar</button>
+                    `;
+                    document.body.appendChild(dynamicInstallBanner);
+
+                    // Add click listener for the dynamically created button
+                    dynamicInstallBanner.querySelector('button').addEventListener('click', () => {
+                        clearTimeout(bannerTimeout); // Cancel the timeout
+                        if (deferredInstallPrompt) {
+                            deferredInstallPrompt.prompt();
+                            deferredInstallPrompt.userChoice.then((choiceResult) => {
+                                if (choiceResult.outcome === 'accepted') {
+                                    console.log('Usuario aceptó la instalación');
+                                } else {
+                                    console.log('Usuario rechazó la instalación');
+                                }
+                                deferredInstallPrompt = null; // Prompt has been used
+                                if (dynamicInstallBanner && dynamicInstallBanner.parentNode) {
+                                    dynamicInstallBanner.remove(); // Remove the banner after user interaction
+                                }
+                            });
+                        } else {
+                            console.log('deferredPrompt no disponible. El navegador no mostró el prompt de instalación.');
+                            if (dynamicInstallBanner && dynamicInstallBanner.parentNode) {
+                                dynamicInstallBanner.remove(); // Remove the banner even if prompt is not available
+                            }
+                        }
+                    });
+
+                    // Set a timeout to remove the banner after 10 seconds
+                    bannerTimeout = setTimeout(() => {
+                        if (dynamicInstallBanner && dynamicInstallBanner.parentNode) { // Check if banner still exists
+                            dynamicInstallBanner.remove();
+                            console.log('Banner de instalación eliminado después de 10 segundos.');
+                        }
+                    }, 10000); // 10,000 milliseconds = 10 seconds
+
+                    // Optional: Hide the banner if the user scrolls (common behavior for PWA banners)
+                    window.addEventListener('scroll', () => {
+                        if (dynamicInstallBanner && dynamicInstallBanner.parentNode) {
+                            dynamicInstallBanner.remove();
+                            clearTimeout(bannerTimeout);
+                            console.log('Banner de instalación eliminado por scroll.');
+                        }
+                    }, { once: true }); // Only listen for the first scroll event
+                }
                 console.log('beforeinstallprompt event fired. PWA is installable.');
             });
 
             // Listen for the appinstalled event
             window.addEventListener('appinstalled', () => {
                 // Hide the install button/banner when the app is installed
-                installBanner.style.display = 'none';
+                if (dynamicInstallBanner && dynamicInstallBanner.parentNode) {
+                    dynamicInstallBanner.remove();
+                }
                 console.log('PWA was successfully installed.');
             });
-
-            // Handle install button click (direct PWA prompt if available)
-            installButton.addEventListener('click', async (e) => {
-                e.preventDefault();
-                console.log('Install button clicked.');
-
-                if (deferredInstallPrompt) {
-                    console.log('Attempting to prompt native PWA installation...');
-                    deferredInstallPrompt.prompt();
-                    // Wait for the user to respond to the prompt
-                    const { outcome } = await deferredInstallPrompt.userChoice;
-                    console.log(`User response to the install prompt: ${outcome}`);
-                    deferredInstallPrompt = null; // Clear the prompt as it's been used
-                } else {
-                    // If no prompt available (e.g., already dismissed, or not supported),
-                    // we do nothing as per user request to avoid manual steps.
-                    console.log('Native PWA install prompt not available or already dismissed. No action taken.');
-                }
-            });
-
-            // Eliminar lógica del modal de instalación manual ya que se ha quitado.
-            // const installModal = document.getElementById('install-modal');
-            // const closeInstallModalBtn = document.getElementById('close-install-modal');
-            // if (closeInstallModalBtn) {
-            //     closeInstallModalBtn.addEventListener('click', function() {
-            //         installModal.classList.remove('show');
-            //     });
-            // }
-            // if (installModal) {
-            //     installModal.addEventListener('click', function(e) {
-            //         if (e.target === installModal) {
-            //             installModal.classList.remove('show');
-            //         }
-            //     });
-            // }
-
 
             // --- Exam Logic ---
             const quizContainer = document.getElementById('quiz-container');
