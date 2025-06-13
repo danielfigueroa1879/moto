@@ -393,7 +393,7 @@
         }
 
         #quiz-container {
-            display: none; /* Hidden by default */
+            /* display: none; */ /* Removed from here, handled by JS function */
             text-align: left; /* Questions aligned left within their container */
         }
 
@@ -698,7 +698,7 @@
             
             <button id="start-exam-btn" class="mb-4">Empezar Examen Ahora</button>
 
-            <div id="quiz-container" class="mt-4">
+            <div id="quiz-container" class="mt-4" style="display: none;">
                 <!-- Questions will be loaded here by JavaScript -->
                 <p class="text-center">Cargando preguntas del examen...</p>
             </div>
@@ -912,8 +912,9 @@
             const examResults = document.getElementById('exam-results');
             const startExamBtn = document.getElementById('start-exam-btn'); // New button
 
-            // Hide quiz container initially
-            quizContainer.style.display = 'none';
+            // Hide quiz container initially in JavaScript, overriding CSS (if present)
+            // This ensures it's hidden before the button is clicked
+            quizContainer.style.display = 'none'; 
 
             // Fallback questions in case Gemini API fails or takes too long
             const defaultQuestions = [
@@ -1074,8 +1075,8 @@
             // Function to generate questions using Gemini API
             async function generateQuestions() {
                 // Show loading message inside quiz container
-                quizContainer.innerHTML = '<p class="text-center">Generando preguntas con IA... Esto puede tardar unos segundos.</p>';
-                quizContainer.style.display = 'block'; // Make quiz container visible
+                quizContainer.innerHTML = '<p class="text-center text-info">Generando preguntas con IA... Esto puede tardar unos segundos.</p>';
+                quizContainer.style.display = 'block'; // Make quiz container visible immediately
                 startExamBtn.style.display = 'none'; // Hide the start button
 
                 const prompt = "Genera 30 preguntas de opción múltiple sobre la Ley de Tránsito de Chile (Ley 18.290), enfocadas en normativas para motocicletas. Cada pregunta debe tener 4 opciones (A, B, C, D) y una única respuesta correcta. El formato debe ser un arreglo de objetos JSON, donde cada objeto tenga 'question', 'options' (un arreglo de strings) y 'correctAnswer' (el string de la respuesta correcta).";
