@@ -637,6 +637,7 @@
         <section id="ai-clarifier-section" class="mt-5">
             <h2 class="text-center">Clarificador Legal con IA (Pregúntale a Gemini)</h2>
             <p class="text-center">¿Tienes dudas sobre algún artículo de la Ley de Tránsito o una normativa específica para motociclistas? Escribe tu pregunta a continuación y nuestra inteligencia artificial te proporcionará una explicación clara.</p>
+            <img src="gemini.png" alt="Logo de Gemini IA" class="gemini-logo" style="float: right; width: 80px; height: auto; margin-left: 15px; margin-bottom: 10px;">
             <textarea id="ai-question-input" placeholder="Ej: ¿Qué dice la Ley 18.290 sobre el uso del chaleco reflectante en motos?"></textarea>
             <button id="ask-ai-btn">Preguntar a la IA</button>
             <div id="ai-clarifier-response" class="mt-3">
@@ -767,8 +768,8 @@
                 e.preventDefault(); // Prevent the mini-infobar from appearing on mobile
                 deferredInstallPrompt = e; // Stash the event so it can be triggered later.
                 
-                // If the banner doesn't exist yet, create it
-                if (!dynamicInstallBanner && !window.matchMedia('(display-mode: standalone)').matches) {
+                // If the banner doesn't exist yet and it's a mobile device (or small screen)
+                if (!dynamicInstallBanner && window.matchMedia('(max-width: 768px)').matches && !window.matchMedia('(display-mode: standalone)').matches) {
                     dynamicInstallBanner = document.createElement('div');
                     dynamicInstallBanner.id = 'dynamic-install-banner'; // Assign an ID for CSS targeting
                     dynamicInstallBanner.innerHTML = `
