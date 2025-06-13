@@ -104,12 +104,12 @@
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
             padding: 0.5rem 0.8rem;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out; /* Increased transition duration */
             margin-left: 10px;
         }
 
         .search-toggler:hover {
-            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+            transform: scale(1.08); /* Slightly larger scale */
         }
 
         .search-toggler i {
@@ -148,12 +148,12 @@
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
             padding: 0.5rem 0.8rem;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out; /* Increased transition duration */
             margin-left: 10px;
         }
 
         .contact-btn:hover {
-            transform: scale(1.05); /* Ligeramente más grande al pasar el cursor */
+            transform: scale(1.08); /* Slightly larger scale */
         }
 
         .contact-btn i {
@@ -247,7 +247,7 @@
         }
 
         .main-content ul li::before {
-            content: "\2023"; /* Unicode para un triángulo (o puedes usar un SVG para una flecha) */
+            content: "\2023"; /* Unicode para un triángulo (o puedes usar un SVG para una una flecha) */
             font-size: 1em;
             color: #007bff; /* Color azul para las viñetas */
             position: absolute;
@@ -848,8 +848,6 @@
             // --- Install App Banner and PWA Logic ---
             const installBanner = document.getElementById('install-banner');
             const installButton = document.getElementById('install-button');
-            const installModal = document.getElementById('install-modal');
-            const closeInstallModalBtn = document.getElementById('close-install-modal');
 
             // Show banner initially after 1 second, then hide after 7 seconds
             // Only show if PWA is NOT installed and 'beforeinstallprompt' fires
@@ -858,23 +856,20 @@
                 if (window.matchMedia('(display-mode: standalone)').matches) {
                     installBanner.style.display = 'none'; // Hide banner if already installed
                     console.log('PWA ya está instalada. Ocultando banner.');
-                } else if (!deferredInstallPrompt) { // If not installable via prompt, show simple banner
+                } else { // If not installed, show banner temporarily
                     installBanner.classList.add('show');
                     setTimeout(() => {
                         installBanner.classList.remove('show');
                     }, 7000); 
-                    console.log('PWA no instalable vía prompt, mostrando banner temporal.');
+                    console.log('PWA no instalada, mostrando banner temporal.');
                 }
             }, 1000); 
 
             // Listen for the beforeinstallprompt event (PWA installation)
             window.addEventListener('beforeinstallprompt', (e) => {
-                // Prevent the mini-infobar from appearing on mobile
-                e.preventDefault();
-                // Stash the event so it can be triggered later.
-                deferredInstallPrompt = e;
-                // Show the install button/banner as the PWA is installable
-                installBanner.style.display = 'flex'; 
+                e.preventDefault(); // Prevent the mini-infobar from appearing on mobile
+                deferredInstallPrompt = e; // Stash the event so it can be triggered later.
+                installBanner.style.display = 'flex'; // Make install banner visible
                 installBanner.classList.add('show'); // Ensure it becomes visible
                 console.log('beforeinstallprompt event fired. PWA is installable.');
             });
@@ -886,7 +881,7 @@
                 console.log('PWA was successfully installed.');
             });
 
-            // Handle install button click
+            // Handle install button click (direct PWA prompt if available)
             installButton.addEventListener('click', async (e) => {
                 e.preventDefault();
                 console.log('Install button clicked.');
@@ -897,31 +892,29 @@
                     // Wait for the user to respond to the prompt
                     const { outcome } = await deferredInstallPrompt.userChoice;
                     console.log(`User response to the install prompt: ${outcome}`);
-                    // We've used the prompt, and can't use it again, clear it.
-                    deferredInstallPrompt = null;
-                    if (outcome === 'accepted') {
-                        installBanner.style.display = 'none'; // Hide banner if accepted
-                    } else {
-                        // If user dismissed, show the explanatory modal
-                        console.log('PWA prompt dismissed. Showing manual installation modal.');
-                        installModal.classList.add('show');
-                    }
+                    deferredInstallPrompt = null; // Clear the prompt as it's been used
                 } else {
-                    // If beforeinstallprompt hasn't fired or was dismissed, show explanatory modal
-                    console.log('Native PWA install prompt not available or already dismissed. Showing manual installation modal.');
-                    installModal.classList.add('show');
+                    // If no prompt available (e.g., already dismissed, or not supported),
+                    // we do nothing as per user request to avoid manual steps.
+                    console.log('Native PWA install prompt not available or already dismissed. No action taken.');
                 }
             });
 
-            closeInstallModalBtn.addEventListener('click', function() {
-                installModal.classList.remove('show');
-            });
-
-            installModal.addEventListener('click', function(e) {
-                if (e.target === installModal) {
-                    installModal.classList.remove('show');
-                }
-            });
+            // Eliminar lógica del modal de instalación manual ya que se ha quitado.
+            // const installModal = document.getElementById('install-modal');
+            // const closeInstallModalBtn = document.getElementById('close-install-modal');
+            // if (closeInstallModalBtn) {
+            //     closeInstallModalBtn.addEventListener('click', function() {
+            //         installModal.classList.remove('show');
+            //     });
+            // }
+            // if (installModal) {
+            //     installModal.addEventListener('click', function(e) {
+            //         if (e.target === installModal) {
+            //             installModal.classList.remove('show');
+            //         }
+            //     });
+            // }
 
 
             // --- Exam Logic ---
