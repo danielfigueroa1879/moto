@@ -698,7 +698,7 @@
             
             <button id="start-exam-btn" class="mb-4">Empezar Examen Ahora</button>
 
-            <div id="quiz-container" class="mt-4" style="display: none;">
+            <div id="quiz-container" class="mt-4">
                 <!-- Questions will be loaded here by JavaScript -->
                 <p class="text-center">Cargando preguntas del examen...</p>
             </div>
@@ -1073,10 +1073,11 @@
 
             // Function to generate questions using Gemini API
             async function generateQuestions() {
+                // Show loading message inside quiz container
                 quizContainer.innerHTML = '<p class="text-center">Generando preguntas con IA... Esto puede tardar unos segundos.</p>';
-                // Ocultar el botón de iniciar examen mientras se cargan las preguntas
-                startExamBtn.style.display = 'none'; 
-                
+                quizContainer.style.display = 'block'; // Make quiz container visible
+                startExamBtn.style.display = 'none'; // Hide the start button
+
                 const prompt = "Genera 30 preguntas de opción múltiple sobre la Ley de Tránsito de Chile (Ley 18.290), enfocadas en normativas para motocicletas. Cada pregunta debe tener 4 opciones (A, B, C, D) y una única respuesta correcta. El formato debe ser un arreglo de objetos JSON, donde cada objeto tenga 'question', 'options' (un arreglo de strings) y 'correctAnswer' (el string de la respuesta correcta).";
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
