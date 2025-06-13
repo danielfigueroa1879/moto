@@ -562,6 +562,10 @@
             .install-modal-content {
                 padding: 20px;
             }
+            /* Adjust exam question font size for small screens */
+            .question-card h5 {
+                font-size: 0.9em; /* Smaller font size on mobile */
+            }
         }
     </style>
 </head>
@@ -1173,7 +1177,8 @@
                     return;
                 }
 
-                aiClarifierResponse.innerHTML = '<p>Preguntando a la IA... Esto puede tardar unos segundos.</p>';
+                // Show loading state for AI Clarifier
+                aiClarifierResponse.innerHTML = '<p class="text-info">Cargando respuesta de la IA... Esto puede tardar unos segundos.</p>';
                 askAiBtn.disabled = true;
 
                 const prompt = `Como un experto en la Ley de Tránsito de Chile (Ley 18.290) y normativas de motocicletas, explica lo siguiente de manera clara y concisa. Si la pregunta es directamente sobre motos, enfócate en esa normativa: "${userQuestion}"`;
@@ -1184,7 +1189,7 @@
                 try {
                     const apiKey = ""; // Canvas will automatically provide it in runtime
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                    console.log("Attempting to get AI clarification with Gemini API...");
+                    console.log("Attempting to get AI clarification with Gemini API for user question:", userQuestion);
                     const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1193,8 +1198,8 @@
 
                     if (!response.ok) {
                         const errorData = await response.json();
-                        console.error('Error al llamar a la API de Gemini para clarificación:', response.status, response.statusText, errorData);
-                        aiClarifierResponse.innerHTML = `<p class="text-danger">Hubo un error al obtener la respuesta de la IA. Por favor, inténtalo de nuevo. (Código de estado: ${response.status})</p>`;
+                        console.error('Error fetching from Gemini API for clarification:', response.status, response.statusText, errorData);
+                        aiClarifierResponse.innerHTML = `<p class="text-danger">Hubo un error (${response.status}) al obtener la respuesta de la IA. Por favor, inténtalo de nuevo.</p>`;
                         return;
                     }
 
@@ -1205,12 +1210,12 @@
                         const text = result.candidates[0].content.parts[0].text;
                         aiClarifierResponse.innerHTML = `<p>${text}</p>`;
                     } else {
-                        console.warn("Gemini API clarification response structure is unexpected.");
-                        aiClarifierResponse.innerHTML = '<p class="text-danger">No se pudo obtener una respuesta clara de la IA.</p>';
+                        console.warn("Gemini API clarification response structure is unexpected or empty.");
+                        aiClarifierResponse.innerHTML = '<p class="text-warning">No se pudo obtener una respuesta clara de la IA. Intenta reformular tu pregunta.</p>';
                     }
                 } catch (error) {
-                    console.error('Error de red o parseo en la llamada a Gemini para clarificación:', error);
-                    aiClarifierResponse.innerHTML = '<p class="text-danger">Error de conexión. Asegúrate de tener acceso a internet.</p>';
+                    console.error('Network error or parsing issue in Gemini API call for clarification:', error);
+                    aiClarifierResponse.innerHTML = '<p class="text-danger">Error de conexión al Clarificador IA. Asegúrate de tener acceso a internet y que el servicio esté disponible.</p>';
                 } finally {
                     askAiBtn.disabled = false;
                 }
