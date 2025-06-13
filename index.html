@@ -179,6 +179,16 @@
             color: #333;
         }
 
+        /* New info-section style for white containers */
+        .info-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+
         .main-content h1, .main-content h2, .main-content h3,
         .main-content h4, .main-content h5, .main-content h6 {
             font-weight: 700; /* Negrita */
@@ -698,7 +708,7 @@
             
             <button id="start-exam-btn" class="mb-4">Empezar Examen Ahora</button>
 
-            <div id="quiz-container" class="mt-4" style="display: none;">
+            <div id="quiz-container" class="mt-4">
                 <!-- Questions will be loaded here by JavaScript -->
                 <p class="text-center">Cargando preguntas del examen...</p>
             </div>
@@ -721,75 +731,83 @@
             </div>
         </section>
 
-        <h2 id="leyes">Leyes y Normativas Clave (Ley 18.290 y más)</h2>
-        <p>La Ley de Tránsito Nº 18.290 es el cuerpo legal fundamental que regula el uso de las vías públicas en Chile. A continuación, exploraremos algunos de sus puntos más importantes, así como otras normativas específicas para motociclistas.</p>
+        <section class="info-section">
+            <h2 id="leyes">Leyes y Normativas Clave (Ley 18.290 y más)</h2>
+            <p>La Ley de Tránsito Nº 18.290 es el cuerpo legal fundamental que regula el uso de las vías públicas en Chile. A continuación, exploraremos algunos de sus puntos más importantes, así como otras normativas específicas para motociclistas.</p>
 
-        <h3>Uso de Casco y Elementos de Seguridad</h3>
-        <p>El uso del casco protector es obligatorio para todos los motociclistas y sus acompañantes. Este debe ser un casco reglamentario, certificado y abrochado correctamente. La normativa también exige el uso de otros elementos de seguridad.</p>
-        <img src="https://placehold.co/800x400/007bff/ffffff?text=Casco+Reglamentario" alt="Infografía sobre el uso de casco reglamentario en motocicletas." class="img-fluid">
-        <p class="image-caption">Imagen explicativa sobre la importancia del casco en la seguridad vial de los motociclistas.</p>
+            <h3>Uso de Casco y Elementos de Seguridad</h3>
+            <p>El uso del casco protector es obligatorio para todos los motociclistas y sus acompañantes. Este debe ser un casco reglamentario, certificado y abrochado correctamente. La normativa también exige el uso de otros elementos de seguridad.</p>
+            
+            <div class="text-center my-4">
+                <a href="https://www.conaset.cl/ley-de-convivencia/" target="_blank" class="btn btn-primary btn-lg">Ver la página completa de Leyes y Normativas</a>
+            </div>
 
-        <p>Algunos puntos importantes a recordar sobre la seguridad vial en moto:</p>
-        <ul>
-            <li><i class="icon-small bi bi-triangle-fill"></i> El casco debe estar homologado y en buenas condiciones.</li>
-            <li><i class="icon-small bi bi-triangle-fill"></i> Usar guantes, chaqueta con protecciones y calzado adecuado.</li>
-            <li><i class="icon-small bi bi-triangle-fill"></i> Mantener las luces encendidas día y noche.</li>
-        </ul>
+            <p>Algunos puntos importantes a recordar sobre la seguridad vial en moto:</p>
+            <ul>
+                <li><i class="icon-small bi bi-triangle-fill"></i> El casco debe estar homologado y en buenas condiciones.</li>
+                <li><i class="icon-small bi bi-triangle-fill"></i> Usar guantes, chaqueta con protecciones y calzado adecuado.</li>
+                <li><i class="icon-small bi bi-triangle-fill"></i> Mantener las luces encendidas día y noche.</li>
+            </ul>
 
-        <h3>Velocidad y Distancia de Seguridad</h3>
-        <p>Respetar los límites de velocidad y mantener una distancia de seguridad adecuada es crucial para evitar accidentes. La <abbr title="Ley de Tránsito" class="text-primary">LT</abbr> establece sanciones para quienes no cumplan con estas disposiciones. Por ejemplo, la velocidad máxima en zonas urbanas es de 50 <i class="icon-small bi bi-speedometer"></i> km/h.</p>
+            <h3>Velocidad y Distancia de Seguridad</h3>
+            <p>Respetar los límites de velocidad y mantener una distancia de seguridad adecuada es crucial para evitar accidentes. La <abbr title="Ley de Tránsito" class="text-primary">LT</abbr> establece sanciones para quienes no cumplan con estas disposiciones. Por ejemplo, la velocidad máxima en zonas urbanas es de 50 <i class="icon-small bi bi-speedometer"></i> km/h.</p>
 
-        <blockquote>
-            <p>Como indica el artículo 144 de la Ley de Tránsito: "La velocidad en zonas urbanas no podrá exceder de 50 kilómetros por hora."</p>
-            <p class="text-end fst-italic"> Ejemplo de cita en bloque </p>
-        </blockquote>
+            <blockquote>
+                <p>Como indica el artículo 144 de la Ley de Tránsito: "La velocidad en zonas urbanas no podrá exceder de 50 kilómetros por hora."</p>
+                <p class="text-end fst-italic"> Ejemplo de cita en bloque </p>
+            </blockquote>
 
-        <p>El cálculo de la distancia de seguridad puede variar dependiendo de las condiciones climáticas y del estado de la vía. Una <var class="text-primary">fórmula</var> básica para estimar la distancia en segundos es la "regla de los tres segundos".</p>
+            <p>El cálculo de la distancia de seguridad puede variar dependiendo de las condiciones climáticas y del estado de la vía. Una <var class="text-primary">fórmula</var> básica para estimar la distancia en segundos es la "regla de los tres segundos".</p>
 
-        <h3>Maniobras y Adelantamientos</h3>
-        <p>Las motocicletas deben realizar los adelantamientos y virajes con especial precaución, respetando las señales y las normas de tránsito. <kbd class="text-primary">Ctrl</kbd> + <kbd class="text-primary">Alt</kbd> + <kbd class="text-primary">Del</kbd> no se aplica aquí, pero la atención constante es vital.</p>
+            <h3>Maniobras y Adelantamientos</h3>
+            <p>Las motocicletas deben realizar los adelantamientos y virajes con especial precaución, respetando las señales y las normas de tránsito. <kbd class="text-primary">Ctrl</kbd> + <kbd class="text-primary">Alt</kbd> + <kbd class="text-primary">Del</kbd> no se aplica aquí, pero la atención constante es vital.</p>
 
-        <pre><code>
-            // Ejemplo de código para cálculo de distancia (solo ilustrativo)
-            function calcularDistanciaSeguridad(velocidad_kmh) {
-                let velocidad_ms = velocidad_kmh * 1000 / 3600;
-                let distancia_reaccion = velocidad_ms * 1; // 1 segundo de reacción
-                let distancia_frenado = (velocidad_ms * velocidad_ms) / (2 * 9.8 * 0.7); // Ejemplo básico
-                return distancia_reaccion + distancia_frenado;
-            }
-            // console.log(calcularDistanciaSeguridad(60)); // Salida de programa <i class="icon-small bi bi-terminal"></i>
-        </code></pre>
-        <p>La <mark>seguridad</mark> es primordial en cada trayecto. Evite maniobras bruscas.</p>
+            <pre><code>
+                // Ejemplo de código para cálculo de distancia (solo ilustrativo)
+                function calcularDistanciaSeguridad(velocidad_kmh) {
+                    let velocidad_ms = velocidad_kmh * 1000 / 3600;
+                    let distancia_reaccion = velocidad_ms * 1; // 1 segundo de reacción
+                    let distancia_frenado = (velocidad_ms * velocidad_ms) / (2 * 9.8 * 0.7); // Ejemplo básico
+                    return distancia_reaccion + distancia_frenado;
+                }
+                // console.log(calcularDistanciaSeguridad(60)); // Salida de programa <i class="icon-small bi bi-terminal"></i>
+            </code></pre>
+            <p>La <mark>seguridad</mark> es primordial en cada trayecto. Evite maniobras bruscas.</p>
+        </section>
 
-        <h2 id="interes">Links de Interés</h2>
-        <p>Aquí encontrarás enlaces a recursos útiles para complementar tu conocimiento sobre la ley de tránsito y la conducción de motocicletas.</p>
-        <ul>
-            <li><i class="icon-small bi bi-link"></i> <a href="https://www.conaset.cl/" target="_blank">CONASET (Comisión Nacional de Seguridad de Tránsito)</a></li>
-            <li><i class="icon-small bi bi-link"></i> <a href="https://www.bcn.cl/leychile/navegar?i=29708" target="_blank">Ley de Tránsito 18.290 - Biblioteca del Congreso Nacional</a></li>
-            <li><i class="icon-small bi bi-link"></i> <a href="https://practicatest.cl/blog/normativa-de-transito/como-adelantar-con-motocicleta" target="_blank">Artículo: Cómo adelantar con motocicleta - Practicatest Chile</a></li>
-        </ul>
+        <section class="info-section">
+            <h2 id="interes">Links de Interés</h2>
+            <p>Aquí encontrarás enlaces a recursos útiles para complementar tu conocimiento sobre la ley de tránsito y la conducción de motocicletas.</p>
+            <ul>
+                <li><i class="icon-small bi bi-link"></i> <a href="https://www.conaset.cl/" target="_blank">CONASET (Comisión Nacional de Seguridad de Tránsito)</a></li>
+                <li><i class="icon-small bi bi-link"></i> <a href="https://www.bcn.cl/leychile/navegar?i=29708" target="_blank">Ley de Tránsito 18.290 - Biblioteca del Congreso Nacional</a></li>
+                <li><i class="icon-small bi bi-link"></i> <a href="https://practicatest.cl/blog/normativa-de-transito/como-adelantar-con-motocicleta" target="_blank">Artículo: Cómo adelantar con motocicleta - Practicatest Chile</a></li>
+            </ul>
 
-        <div style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; margin: 20px auto; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
-            <p style="color: #666;">Mapa de referencia (sin interactividad)</p>
-        </div>
+            <div style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; margin: 20px auto; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0;">
+                <p style="color: #666;">Mapa de referencia (sin interactividad)</p>
+            </div>
 
-        <h3>Documentos y Recursos Descargables</h3>
-        <p>Próximamente, podrás descargar documentos importantes relacionados con la ley de tránsito.</p>
-        <p><i class="icon-small bi bi-file-earmark-text"></i> <a href="#" download>Manual de Conducción para Motociclistas (PDF)</a></p>
+            <h3>Documentos y Recursos Descargables</h3>
+            <p>Próximamente, podrás descargar documentos importantes relacionados con la ley de tránsito.</p>
+            <!-- Removed: <p><i class="icon-small bi bi-file-earmark-text"></i> <a href="#" download>Manual de Conducción para Motociclistas (PDF)</a></p> -->
 
-        <h3>Videos Educativos</h3>
-        <p>Más adelante, encontrarás una sección con videos tutoriales sobre técnicas de conducción segura y explicaciones de la ley.</p>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+            <h3>Videos Educativos</h3>
+            <p>Más adelante, encontrarás una sección con videos tutoriales sobre técnicas de conducción segura y explicaciones de la ley.</p>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </section>
 
-        <h2 id="contacto">Contacto</h2>
-        <p>Si tienes preguntas o necesitas más información, no dudes en contactarnos. Estamos aquí para ayudarte a ser un conductor más seguro y mejor informado.</p>
-        <address class="text-center">
-            <strong>Daniel Elías Figueroa Chacama</strong><br>
-            Ingeniero en Informática<br>
-            Chile
-        </address>
+        <section class="info-section">
+            <h2 id="contacto">Contacto</h2>
+            <p>Si tienes preguntas o necesitas más información, no dudes en contactarnos. Estamos aquí para ayudarte a ser un conductor más seguro y mejor informado.</p>
+            <address class="text-center">
+                <strong>Daniel Elías Figueroa Chacama</strong><br>
+                Ingeniero en Informática<br>
+                Chile
+            </address>
+        </section>
     </div>
 
     <footer class="footer">
