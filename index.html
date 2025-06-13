@@ -26,6 +26,20 @@
             background-attachment: fixed; /* Fija la imagen al scroll */
         }
 
+        /* Overlay for blurred background */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white overlay */
+            backdrop-filter: blur(5px); /* Apply blur to the background */
+            -webkit-backdrop-filter: blur(5px); /* For Safari compatibility */
+            z-index: -1; /* Ensure it's behind the content but above the main body background */
+        }
+
+
         /* Navbar Customization */
         .navbar-custom {
             background-color: #e0e0e0; /* Gris claro para el fondo de la navbar */
@@ -357,6 +371,30 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             margin-bottom: 40px;
+            text-align: center; /* Center content of exam section */
+        }
+
+        #start-exam-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+
+        #start-exam-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        #quiz-container {
+            display: none; /* Hidden by default */
+            text-align: left; /* Questions aligned left within their container */
         }
 
         .question-card {
@@ -370,14 +408,16 @@
         .question-card h5 { /* Estilo para las preguntas del examen */
             color: #333; /* Color negro */
             font-weight: 700; /* Negrita */
-            font-size: 1.1em; /* Un poco más pequeña */
+            font-size: 1.1em; /* Tamaño por defecto para PC */
             text-align: justify; /* Justificado */
             margin-bottom: 15px;
         }
-
-        .question-card .form-check-label {
+        
+        .question-card .form-check-label { /* Estilo para las alternativas */
             cursor: pointer;
             padding-left: 5px;
+            font-weight: normal; /* No negrita para las alternativas */
+            color: #333; /* Color negro para las alternativas */
         }
 
         .exam-controls {
@@ -550,8 +590,9 @@
             .navbar-custom .nav-link::after {
                 width: 50%; /* Subrayado más corto en móvil */
             }
+            /* Adjusted main content padding for mobile */
             .main-content {
-                padding: 15px 5%; /* Más margen en móviles */
+                padding: 15px 2%; /* Margen del 2% a los lados en móviles */
             }
             .main-content h1, .main-content h2, .main-content h3,
             .main-content h4, .main-content h5, .main-content h6 {
@@ -569,12 +610,19 @@
             }
             /* Adjust exam question font size for small screens */
             .question-card h5 {
-                font-size: 0.9em; /* Smaller font size on mobile */
+                font-size: 0.9em; /* Smaller font size for question text on mobile */
+            }
+            /* Adjust alternative font size for small screens */
+            .question-card .form-check-label {
+                font-size: 0.8em; /* Smaller font size for alternatives on mobile */
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- Background Overlay for blur effect -->
+    <div class="background-overlay"></div>
 
     <!-- Install App Banner -->
     <div id="install-banner">
@@ -647,7 +695,10 @@
         <section id="exam-section" class="mt-5">
             <h2 class="text-center">Examen de Ley de Tránsito para Motociclistas</h2>
             <p class="text-center">Pon a prueba tus conocimientos sobre la Ley de Tránsito chilena, con preguntas enfocadas en la normativa de motos. ¡Obtén tu calificación en escala del 1 al 7!</p>
-            <div id="quiz-container" class="mt-4">
+            
+            <button id="start-exam-btn" class="mb-4">Empezar Examen Ahora</button>
+
+            <div id="quiz-container" class="mt-4" style="display: none;">
                 <!-- Questions will be loaded here by JavaScript -->
                 <p class="text-center">Cargando preguntas del examen...</p>
             </div>
@@ -690,7 +741,7 @@
 
         <blockquote>
             <p>Como indica el artículo 144 de la Ley de Tránsito: "La velocidad en zonas urbanas no podrá exceder de 50 kilómetros por hora."</p>
-            <p class="text-end fst-italic"><i class="icon-small bi bi-quote"></i> Ejemplo de cita en bloque <i class="icon-small bi bi-quote-right"></i></p>
+            <p class="text-end fst-italic"> Ejemplo de cita en bloque </p>
         </blockquote>
 
         <p>El cálculo de la distancia de seguridad puede variar dependiendo de las condiciones climáticas y del estado de la vía. Una <var class="text-primary">fórmula</var> básica para estimar la distancia en segundos es la "regla de los tres segundos".</p>
@@ -859,6 +910,10 @@
             const quizContainer = document.getElementById('quiz-container');
             const submitQuizBtn = document.getElementById('submit-quiz-btn');
             const examResults = document.getElementById('exam-results');
+            const startExamBtn = document.getElementById('start-exam-btn'); // New button
+
+            // Hide quiz container initially
+            quizContainer.style.display = 'none';
 
             // Fallback questions in case Gemini API fails or takes too long
             const defaultQuestions = [
@@ -1019,6 +1074,9 @@
             // Function to generate questions using Gemini API
             async function generateQuestions() {
                 quizContainer.innerHTML = '<p class="text-center">Generando preguntas con IA... Esto puede tardar unos segundos.</p>';
+                // Ocultar el botón de iniciar examen mientras se cargan las preguntas
+                startExamBtn.style.display = 'none'; 
+                
                 const prompt = "Genera 30 preguntas de opción múltiple sobre la Ley de Tránsito de Chile (Ley 18.290), enfocadas en normativas para motocicletas. Cada pregunta debe tener 4 opciones (A, B, C, D) y una única respuesta correcta. El formato debe ser un arreglo de objetos JSON, donde cada objeto tenga 'question', 'options' (un arreglo de strings) y 'correctAnswer' (el string de la respuesta correcta).";
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: prompt }] });
@@ -1046,7 +1104,7 @@
 
                 try {
                     console.log("Attempting to generate questions with Gemini API...");
-                    const apiKey = ""; // Canvas will automatically provide it in runtime
+                    const apiKey = "AIzaSyCUMr9SRpaPJEmB1dhG_g67GZtT8n4_3CI"; // TU CLAVE DE API PROPORCIONADA
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     const response = await fetch(apiUrl, {
                         method: 'POST',
@@ -1123,6 +1181,7 @@
                     `;
                     quizContainer.appendChild(questionCard);
                 });
+                quizContainer.style.display = 'block'; // Show quiz container
                 submitQuizBtn.style.display = 'block'; // Show submit button
             }
 
@@ -1164,11 +1223,10 @@
                 return 7.0;
             }
 
+            // Event listener for the new "Empezar Examen Ahora" button
+            startExamBtn.addEventListener('click', generateQuestions);
 
             submitQuizBtn.addEventListener('click', submitQuiz);
-
-            // Call generateQuestions when the page loads to populate the quiz
-            generateQuestions();
 
             // --- AI Clarifier Logic ---
             const aiQuestionInput = document.getElementById('ai-question-input');
@@ -1192,7 +1250,7 @@
                 const payload = { contents: chatHistory };
 
                 try {
-                    const apiKey = ""; // Canvas will automatically provide it in runtime
+                    const apiKey = "AIzaSyCUMr9SRpaPJEmB1dhG_g67GZtT8n4_3CI"; // TU CLAVE DE API PROPORCIONADA
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     console.log("Attempting to get AI clarification with Gemini API for user question:", userQuestion);
                     const response = await fetch(apiUrl, {
