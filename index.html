@@ -400,6 +400,32 @@
             color: #333; /* Color negro para las alternativas */
         }
 
+        /* NEW: Styles for correct/incorrect answers */
+        .question-card .form-check-label.correct-feedback {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green text */
+            font-weight: 600;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .question-card .form-check-label.incorrect-feedback {
+            background-color: #f8d7da; /* Light red */
+            color: #721c24; /* Dark red text */
+            font-weight: 600;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .question-card .form-check-label .feedback-icon {
+            margin-left: 8px;
+            vertical-align: middle;
+            font-size: 1.1em;
+        }
+
+
         .exam-controls {
             text-align: center;
             margin-top: 30px;
@@ -637,7 +663,7 @@
         <section id="ai-clarifier-section" class="mt-5">
             <h2 class="text-center">Clarificador Legal con IA (Pregúntale a Gemini)</h2>
             <p class="text-center">¿Tienes dudas sobre algún artículo de la Ley de Tránsito o una normativa específica para motociclistas? Escribe tu pregunta a continuación y nuestra inteligencia artificial te proporcionará una explicación clara.</p>
-            <img src="gemini.png" alt="Logo de Gemini IA" class="gemini-logo" style="float: right; width: 80px; height: auto; margin-left: 15px; margin-bottom: 10px;">
+            <img src="https://placehold.co/80x80/000/fff?text=Gemini" alt="Logo de Gemini IA" class="gemini-logo" style="float: right; width: 80px; height: auto; margin-left: 15px; margin-bottom: 10px;">
             <textarea id="ai-question-input" placeholder="Ej: ¿Qué dice la Ley 18.290 sobre el uso del chaleco reflectante en motos?"></textarea>
             <button id="ask-ai-btn">Preguntar a la IA</button>
             <div id="ai-clarifier-response" class="mt-3">
@@ -840,6 +866,7 @@
             // Hide quiz container initially in JavaScript, overriding CSS (if present)
             // This ensures it's hidden before the button is clicked
             quizContainer.style.display = 'none'; 
+            submitQuizBtn.style.display = 'none'; // Hide submit button initially
 
             // Fallback questions in case Gemini API fails or takes too long
             const defaultQuestions = [
@@ -1031,7 +1058,7 @@
 
                 try {
                     console.log("Attempting to generate questions with Gemini API...");
-                    const apiKey = "AIzaSyCUMr9SRpaPJEmB1dhG_g67GZtT8n4_3CI"; // TU CLAVE DE API PROPORCIONADA
+                    const apiKey = ""; // TU CLAVE DE API PROPORCIONADA, KEEP IT EMPTY STRING
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     const response = await fetch(apiUrl, {
                         method: 'POST',
@@ -1098,7 +1125,7 @@
                         <div class="options-container">
                             ${q.options.map((option, optIndex) => `
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question${index}" id="q${index}opt${optIndex}" value="${option}">
+                                    <input class="form-check-input" type="radio" name="question${index}" id="q${index}opt${optIndex}" value="${option}" data-question-index="${index}">
                                     <label class="form-check-label" for="q${index}opt${optIndex}">
                                         ${option}
                                     </label>
@@ -1110,7 +1137,41 @@
                 });
                 quizContainer.style.display = 'block'; // Show quiz container
                 submitQuizBtn.style.display = 'block'; // Show submit button
+
+                // Add event listeners to radio buttons for immediate feedback
+                quizContainer.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.addEventListener('change', handleAnswerSelection);
+                });
             }
+
+            // New function to handle answer selection and provide immediate feedback
+            function handleAnswerSelection(event) {
+                const selectedInput = event.target;
+                const questionIndex = selectedInput.dataset.questionIndex;
+                const questionData = questions[questionIndex];
+                const selectedValue = selectedInput.value;
+                const questionCard = selectedInput.closest('.question-card');
+                const radioButtons = questionCard.querySelectorAll(`input[name="question${questionIndex}"]`);
+                const labels = questionCard.querySelectorAll('.form-check-label');
+
+                // Disable all radio buttons for this question after an option is selected
+                radioButtons.forEach(radio => radio.disabled = true);
+
+                // Provide feedback
+                labels.forEach(label => {
+                    const labelFor = label.getAttribute('for');
+                    const inputElement = document.getElementById(labelFor);
+
+                    if (inputElement && inputElement.value === questionData.correctAnswer) {
+                        label.classList.add('correct-feedback');
+                        label.innerHTML += ' <i class="bi bi-check-circle-fill feedback-icon"></i>'; // Add check icon
+                    } else if (inputElement && inputElement.value === selectedValue && selectedValue !== questionData.correctAnswer) {
+                        label.classList.add('incorrect-feedback');
+                        label.innerHTML += ' <i class="bi bi-x-circle-fill feedback-icon"></i>'; // Add cross icon
+                    }
+                });
+            }
+
 
             // Function to submit the quiz and calculate score
             function submitQuiz() {
@@ -1135,7 +1196,7 @@
                 `;
                 examResults.style.display = 'block';
                 submitQuizBtn.style.display = 'none'; // Hide submit button after submission
-                quizContainer.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true); // Disable options after submission
+                // No need to disable options here as it's already done per question
             }
 
             // Function to calculate grade from 1 to 7
@@ -1177,7 +1238,7 @@
                 const payload = { contents: chatHistory };
 
                 try {
-                    const apiKey = "AIzaSyCUMr9SRpaPJEmB1dhG_g67GZtT8n4_3CI"; // TU CLAVE DE API PROPORCIONADA
+                    const apiKey = ""; // TU CLAVE DE API PROPORCIONADA, KEEP IT EMPTY STRING
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     console.log("Attempting to get AI clarification with Gemini API for user question:", userQuestion);
                     const response = await fetch(apiUrl, {
@@ -1214,3 +1275,4 @@
     </script>
 </body>
 </html>
+
